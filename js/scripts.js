@@ -24,7 +24,6 @@ $(document).on( {
 var isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
   if(!isChrome){
     $('.audioChrome').remove()
-
   }
   else{
      $('.audioNotChrome').remove()
@@ -61,7 +60,6 @@ function keydown(e) {
           $(".man").append("<img src='img/downMan.gif'>");
         }
         else {
-
         }
       }
     }
@@ -138,10 +136,10 @@ function skellyGoing() {
   else {
     skellyLR = (Math.floor(Math.random()*2)*3 + 65);
   }
-  if (parseInt($(".man").css("top")) > (parseInt($(".skull").css("top")))) {
+  if (parseInt($(".man").css("bottom")) < (parseInt($(".skull").css("bottom")))) {
     skellyUD = 83;
   }
-  else if (parseInt($(".man").css("top")) < (parseInt($(".skull").css("top")))) {
+  else if (parseInt($(".man").css("bottom")) > (parseInt($(".skull").css("bottom")))) {
     skellyUD = 87;
   }
   else {
@@ -177,14 +175,24 @@ function skellyGoing() {
     }
     $(".skull").empty();
     $(".skull").append("<img src='img/rageSkull.gif'>");
-    if (((parseInt($(".man").css("left")) >= parseInt($(".skull").css("left"))-10) && parseInt($(".man").css("left")) <= parseInt($(".skull").css("left")) + 215) && ((parseInt($(".man").css("top")) >= parseInt($(".skull").css("top")) - 10) && parseInt($(".man").css("top")) <= parseInt($(".skull").css("top")) + 300)) {
+    if (((parseInt($(".man").css("left")) >= parseInt($(".skull").css("left"))-10) && parseInt($(".man").css("left")) <= parseInt($(".skull").css("left")) + 145) && ((parseInt($(".man").css("top")) >= parseInt($(".skull").css("top")) - 10) && parseInt($(".man").css("top")) <= parseInt($(".skull").css("top")) + 200)) {
       clearInterval(myVar);
       clearInterval(skellyMove);
       $("#skull").hide();
       gameOver();
     }
   }
+  if (!rage && fire.life<=10) {
+    rage = true;
+    musicChange("skullSong");
+  };
+  if (fire.life>10 && rage) {
+    rage = false;
+    musicChange("game");
+  };
 }
+
+var rage = false;
 
 
 function checkTrees(treesAvailable) {
@@ -201,7 +209,6 @@ function checkTrees(treesAvailable) {
       }
     }
   });
-
   return treesClose;
 }
 
@@ -209,10 +216,10 @@ var trees = 0;
 var map = [];
 
 function mapFill() {
-  while (trees < 14) {
+  while (trees < 13) {
     var mapAdd = [parseInt(Math.random()*45),parseInt(Math.random()*49)];
     if (map.includes(mapAdd) === false) {
-      if ((mapAdd[0] > 13 && mapAdd[0] < 26) && (mapAdd[1] > 19 && mapAdd[1]<28)) {
+      if ((mapAdd[0] > 10 && mapAdd[0] < 30) && (mapAdd[1] > 15 && mapAdd[1]<32)) {
       }
       else {
         map.push(mapAdd);

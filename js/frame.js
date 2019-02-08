@@ -11,11 +11,6 @@ function Player() {
   this.time = 0;
 }
 
-// Player.prototype.addToInventory(obj){
-//   this.inventory.push(obj);
-// }
-
-
 Player.prototype.cutTree = function(arr) {
   this.inventory[0].amount++;
     arr.forEach(function(ar) {
@@ -36,13 +31,22 @@ Player.prototype.cutTree = function(arr) {
 Player.prototype.addToFire = function() {
     this.inventory[0].amount -= 10;
     this.score += 100;
-    fire.life += 10;
+    fire.life += 7;
     $("#wood").text(this.inventory[0].amount);
     fx("jump");
 };
 
+var highscores = [];
 var over = false;
 function gameOver(){
+  highscores.push(player.score);
+  highscores.sort(function sortNumber(a,b) {
+        return a - b;
+    });
+  highscores.reverse();
+  if(highscores.length > 5){
+      highscores.length = 5;
+  }
   musicChange("");
   fx("laugh");
   over = true;
@@ -58,13 +62,21 @@ function gameOver(){
     $(".bonfire").hide();
     $("#inventory").hide();
     map = [];
+    $(".your-score").append("Your Score Was: " + player.score);
+    $(".high-scores").empty();
+    highscores.forEach(function(ar){
+      $(".high-scores").append(ar + "<br>")
+    })
   }, 2500);
 }
+
+
 
 function gameRestart() {
   clearInterval(myVar);
   clearInterval(skellyMove);
   $("#gridSpot").show();
+  $(".your-score").empty();
   $("#game-over").hide();
   $(".bonfire").show();
   $("#inventory").show();
@@ -80,6 +92,9 @@ function gameRestart() {
   $(".skull").css("left","-300px");
   $(".skull").css("top","50%");
   $("#rageSkull").hide();
+  $("#wood").text("0");
+  $("#score-count").text(player.score);
+  document.getElementById("timer").innerHTML = fire.life;
   trees = 0;
   mapFill();
 }
